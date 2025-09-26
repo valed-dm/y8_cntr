@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "yolov8-car-counter"
+version = "0.1.0"
+description = "YOLOv8 car detection + tracking in polygonal ROI, writes annotated video"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ultralytics = "^8.0"        # YOLOv8 Python package
+opencv-python = "^4.7"
+numpy = "^1.26"
+shapely = "^2.1"
+loguru = "^0.7"
+tqdm = "^4.65"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
