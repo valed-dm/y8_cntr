@@ -1,18 +1,21 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 from loguru import logger
 from shapely.geometry import Point
 from ultralytics import YOLO
 
-from src.carcntr.counting import CounterManager
-from src.carcntr.utils import load_zones
+from carcntr.counting import CounterManager
+from carcntr.utils import load_zones
 
 
-VIDEO_PATH = "../data/counting_cars.mp4"
-POLYGON_PATH = "../config/polygons.json"
+PROJECT_ROOT = Path(__file__).parent.parent
+VIDEO_PATH = PROJECT_ROOT / "data" / "counting_cars.mp4"
+POLYGON_PATH = PROJECT_ROOT / "config" / "polygons.json"
 MODEL_PATH = "yolov8n.pt"
-OUTPUT_VIDEO_PATH = "output.mp4"
-STATS_FILE_PATH = "statistics.json"
+OUTPUT_VIDEO_PATH = PROJECT_ROOT / "output" / "output_counter.mp4"
+STATS_FILE_PATH = PROJECT_ROOT / "output" / "statistics_counter.json"
 CONFIDENCE_THRESHOLD = 0.7
 VEHICLE_CLASS_IDS = [2, 5, 7]
 
@@ -21,7 +24,7 @@ def main():
     logger.info("Starting Car Counter Application")
     model = YOLO(MODEL_PATH)
     red_zone, green_zone = load_zones(POLYGON_PATH)
-    cap = cv2.VideoCapture(VIDEO_PATH)
+    cap = cv2.VideoCapture(str(VIDEO_PATH))
 
     counter_manager = CounterManager()
 
@@ -29,7 +32,9 @@ def main():
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    out = cv2.VideoWriter(OUTPUT_VIDEO_PATH, fourcc, fps, (frame_width, frame_height))
+    out = cv2.VideoWriter(
+        str(OUTPUT_VIDEO_PATH), fourcc, fps, (frame_width, frame_height)
+    )
 
     while cap.isOpened():
         ret, frame = cap.read()
