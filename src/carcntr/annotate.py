@@ -4,9 +4,11 @@ from pathlib import Path
 import cv2
 
 
-VIDEO_PATH = Path("data/counting_cars.mp4")
-OUTPUT_FRAME_PATH = Path("data/first_frame.jpg")
-CONFIG_PATH = Path("config/polygons.json")
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+VIDEO_PATH = PROJECT_ROOT / "data" / "counting_cars.mp4"
+FRAME_TO_CAPTURE = 50
+OUTPUT_FRAME_PATH = PROJECT_ROOT / "data" / "first_frame.jpg"
+CONFIG_PATH = PROJECT_ROOT / "config" / "polygons.json"
 
 
 def capture_frame(video_path: Path, frame_no: int = 0) -> Path:
@@ -65,7 +67,7 @@ def annotate_polygon(
 
 
 def main():
-    frame_path = capture_frame(VIDEO_PATH, frame_no=100)
+    frame_path = capture_frame(VIDEO_PATH, frame_no=FRAME_TO_CAPTURE)
     print(f"Frame saved to: {frame_path}")
     print(
         "Draw RED polygon (counting zone)."
